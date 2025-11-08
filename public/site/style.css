@@ -1871,31 +1871,36 @@ body.nav-open::before {
 }
 
 @media (max-width: 640px) {
-    .hero {
-        padding: calc(var(--spacing-lg) + 22px) var(--spacing-sm) var(--spacing-lg);
-        margin-top: 1.5rem;
-    }
-
-    .hero-container {
-        padding-bottom: 2.5rem;
-    }
-
     .hero-content {
-        gap: 1.25rem;
+        align-items: center;
+        text-align: center;
+    }
+
+    .hero-description {
+        text-align: center;
     }
 
     .hero-spectrum {
-        margin-bottom: 1.1rem;
+        align-self: center;
     }
 
     .hero-buttons {
-        gap: 0.6rem;
-        margin: 0.7rem 0 var(--spacing-lg);
+        align-items: center;
+    }
+
+    .hero-buttons .btn {
+        width: auto;
+        min-width: 70%;
     }
 
     .hero-stats {
-        gap: 1.25rem;
-        margin-top: 0.6rem;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+    }
+
+    .stat-item {
+        text-align: center;
     }
 }
 
