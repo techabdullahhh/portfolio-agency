@@ -1872,35 +1872,20 @@ body.nav-open::before {
 
 @media (max-width: 640px) {
     .hero-content {
-        align-items: center;
-        text-align: center;
+        gap: 1.6rem;
     }
 
     .hero-description {
-        text-align: center;
+        margin-bottom: 1.4rem;
     }
 
     .hero-spectrum {
-        align-self: center;
+        margin-top: 0.4rem;
+        margin-bottom: 1.35rem;
     }
 
     .hero-buttons {
-        align-items: center;
-    }
-
-    .hero-buttons .btn {
-        width: auto;
-        min-width: 70%;
-    }
-
-    .hero-stats {
-        align-items: center;
-        text-align: center;
-        width: 100%;
-    }
-
-    .stat-item {
-        text-align: center;
+        margin-top: 1rem;
     }
 }
 
