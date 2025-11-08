@@ -123,14 +123,14 @@ const useAnimationFrame = (
   callback: (time: number) => void,
   enabled: boolean
 ) => {
-  const requestRef = useRef<number>();
-  const previousTimeRef = useRef<number>();
+  const requestRef = useRef<number | null>(null);
+  const previousTimeRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (!enabled) return;
 
     const animate = (time: number) => {
-      if (previousTimeRef.current !== undefined) {
+      if (previousTimeRef.current !== null) {
         const delta = (time - previousTimeRef.current) / 1000;
         callback(delta);
       }
@@ -140,8 +140,10 @@ const useAnimationFrame = (
 
     requestRef.current = requestAnimationFrame(animate);
     return () => {
-      if (requestRef.current) cancelAnimationFrame(requestRef.current);
-      previousTimeRef.current = undefined;
+      if (requestRef.current !== null) {
+        cancelAnimationFrame(requestRef.current);
+      }
+      previousTimeRef.current = null;
     };
   }, [callback, enabled]);
 };
