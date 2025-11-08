@@ -48,8 +48,16 @@ if (hamburger && navMenu) {
     }
 
     // Close mobile menu when clicking on a link
-    document.querySelectorAll('.nav-link').forEach(link => {
+    document.querySelectorAll('.nav-link').forEach((link) => {
+        const handlePointerDown = () => link.classList.add('nav-link--tapped');
+        const handlePointerUp = () => link.classList.remove('nav-link--tapped');
+
+        link.addEventListener('pointerdown', handlePointerDown);
+        link.addEventListener('pointerup', handlePointerUp);
+        link.addEventListener('pointerleave', handlePointerUp);
+
         link.addEventListener('click', () => {
+            handlePointerUp();
             toggleNavState(false);
         });
     });
