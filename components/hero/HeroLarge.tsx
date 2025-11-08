@@ -12,9 +12,9 @@ const HeroLarge: React.FC = () => {
           CREATIVE AGENCY
         </p>
 
-        <h1 className="mt-3 text-[52px] font-bold leading-[1.02] tracking-tight text-slate-900 md:text-[80px] md:leading-[1.05]">
-          <span className="block text-slate-900">Intelligent Tech</span>
-          <span className="block text-blue-600">for Tomorrow.</span>
+        <h1 className="mt-3 text-[54px] font-bold leading-[1] tracking-tight md:text-[84px] md:leading-[1.02]">
+          <span className="block text-gradient-azure">Intelligent Tech</span>
+          <span className="block text-gradient-primary">for Tomorrow.</span>
         </h1>
 
         <p className="mt-3 text-sm font-medium uppercase tracking-[0.4em] text-slate-700 md:text-base">
@@ -35,7 +35,7 @@ const HeroLarge: React.FC = () => {
               "Edge Computing",
               "Security Engineering",
             ]}
-            speed={44}
+            speed={72}
           />
         </div>
 

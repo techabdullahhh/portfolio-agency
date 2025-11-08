@@ -17,20 +17,20 @@ type CapabilitiesPillProps = {
   itemClassName?: string;
 };
 
-const DEFAULT_SPEED = 40;
+const DEFAULT_SPEED = 60;
 
-const useIsDesktop = () => {
-  const [isDesktop, setIsDesktop] = useState(false);
+const useIsWideEnough = () => {
+  const [isWide, setIsWide] = useState(false);
 
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 768px)");
-    const handleChange = () => setIsDesktop(mq.matches);
+    const mq = window.matchMedia("(min-width: 640px)");
+    const handleChange = () => setIsWide(mq.matches);
     handleChange();
     mq.addEventListener?.("change", handleChange);
     return () => mq.removeEventListener?.("change", handleChange);
   }, []);
 
-  return isDesktop;
+  return isWide;
 };
 
 const useAnimationFrame = (
@@ -68,7 +68,7 @@ const CapabilitiesPill: React.FC<CapabilitiesPillProps> = ({
   itemClassName,
 }) => {
   const prefersReducedMotion = usePrefersReducedMotion();
-  const isDesktop = useIsDesktop();
+  const isWide = useIsWideEnough();
   const trackRef = useRef<HTMLDivElement | null>(null);
   const singleRunRef = useRef<HTMLDivElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
@@ -77,7 +77,7 @@ const CapabilitiesPill: React.FC<CapabilitiesPillProps> = ({
   const [isPaused, setIsPaused] = useState(false);
 
   const marqueeEnabled =
-    isDesktop && !prefersReducedMotion && speed > 0 && items.length > 0;
+    isWide && !prefersReducedMotion && speed > 0 && items.length > 0;
 
   const baseItems = useMemo(() => items ?? [], [items]);
 
