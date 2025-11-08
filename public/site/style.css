@@ -1888,7 +1888,7 @@ body.nav-open::before {
     .hero-marquee-track {
         width: 100%;
         padding: var(--spacing-xs) calc(var(--spacing-sm) + 12px);
-        animation-duration: 22s;
+        animation-duration: 26s;
         -webkit-mask: none;
         mask: none;
     }
@@ -2153,7 +2153,7 @@ body.project-page {
     padding: var(--spacing-sm) calc(var(--spacing-md) * 1.6);
     font-size: 0.9rem;
     gap: 1rem;
-    animation: marqueeScroll 28s linear infinite;
+    animation: marqueeScroll 34s linear infinite;
     white-space: nowrap;
     -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.95) 12%, rgba(0,0,0,0.95) 88%, transparent 100%);
     mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.95) 12%, rgba(0,0,0,0.95) 88%, transparent 100%);
