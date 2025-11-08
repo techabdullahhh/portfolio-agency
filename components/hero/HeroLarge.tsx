@@ -12,8 +12,9 @@ const HeroLarge: React.FC = () => {
           CREATIVE AGENCY
         </p>
 
-        <h1 className="mt-3 text-[42px] font-semibold leading-[1.05] tracking-tight text-slate-900 md:text-[64px]">
-          Intelligent Tech for Tomorrow
+        <h1 className="mt-3 text-[44px] font-bold leading-[1.03] tracking-tight text-slate-900 md:text-[72px]">
+          <span className="text-slate-900">Intelligent Tech</span>{" "}
+          <span className="text-blue-600">for Tomorrow.</span>
         </h1>
 
         <p className="mt-3 text-sm font-medium uppercase tracking-[0.4em] text-slate-700 md:text-base">
