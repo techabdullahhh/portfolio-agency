@@ -18,6 +18,7 @@ import {
   ChevronFirst,
   ChevronLast,
   Sparkles,
+  Plus,
 } from "lucide-react";
 
 const navItems = [
@@ -40,7 +41,7 @@ export function Sidebar() {
 
   return (
     <motion.aside
-      className="relative hidden h-screen border-r border-white/10 bg-neutral-100/50 shadow-glass backdrop-blur-glass transition-colors duration-500 dark:bg-neutral-900/30 lg:flex"
+      className="relative hidden h-screen border-r border-white/20 bg-gradient-to-b from-white/95 via-primary/5 to-secondary/10 shadow-ambient backdrop-blur-2xl transition-colors duration-500 dark:from-neutral-950/95 dark:via-neutral-900/90 dark:to-neutral-900/90 lg:flex"
       animate={{ width: isCollapsed ? 88 : 288 }}
       initial={false}
       transition={{ type: "spring", stiffness: 320, damping: 38 }}
@@ -85,6 +86,38 @@ export function Sidebar() {
           </button>
         </div>
 
+        {!isCollapsed && (
+          <motion.div
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="px-5 pt-4"
+          >
+            <div className="overflow-hidden rounded-3xl border border-white/30 bg-gradient-to-br from-primary/10 via-white/60 to-secondary/10 p-5 shadow-inner dark:from-primary/5 dark:via-neutral-900/70 dark:to-secondary/5">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.36em] text-primary/80 dark:text-primary/60">
+                    Today&apos;s Focus
+                  </p>
+                  <h3 className="mt-2 text-base font-semibold text-neutral-800 dark:text-neutral-100">
+                    Ship impactful updates
+                  </h3>
+                </div>
+                <Link
+                  href="/admin/projects/new"
+                  className="inline-flex items-center gap-1 rounded-full border border-primary/30 bg-white/80 px-3 py-1 text-[12px] font-semibold text-primary transition hover:-translate-y-0.5 hover:bg-white dark:bg-neutral-900/70"
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  New
+                </Link>
+              </div>
+              <p className="mt-3 text-xs text-neutral-500 dark:text-neutral-400">
+                Triage inbound leads, publish fresh stories, and keep the portfolio ahead of tomorrow.
+              </p>
+            </div>
+          </motion.div>
+        )}
+
         <nav className="flex flex-1 flex-col gap-1 px-3 py-6">
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -100,11 +133,11 @@ export function Sidebar() {
                 <motion.div
                   layout
                   className={cn(
-                    "glass-panel relative flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-medium transition duration-500 ease-ultra-smooth hover:-translate-y-0.5 hover:shadow-ambient",
+                    "relative flex items-center gap-3 rounded-2xl border border-white/40 px-3 py-3 text-sm font-medium transition duration-500 ease-ultra-smooth hover:-translate-y-0.5 hover:shadow-ambient dark:border-white/10",
                     isCollapsed ? "justify-center px-2" : "justify-start",
                     isActive
-                      ? "bg-gradient-to-r from-primary/80 via-secondary/70 to-accent/70 text-primary-foreground shadow-glow"
-                      : "bg-white/10 text-neutral-500 hover:text-foreground dark:bg-white/5 dark:text-neutral-400"
+                      ? "bg-gradient-to-r from-primary/80 via-secondary/70 to-accent/80 text-primary-foreground shadow-glow"
+                      : "bg-white/60 text-neutral-600 hover:bg-white/80 hover:text-neutral-900 dark:bg-neutral-900/40 dark:text-neutral-300 dark:hover:bg-neutral-800/60"
                   )}
                   whileHover={{ scale: isCollapsed ? 1 : 1.015 }}
                   transition={{ type: "spring", stiffness: 380, damping: 32 }}

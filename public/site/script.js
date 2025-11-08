@@ -1,31 +1,56 @@
 // XYZ Agency - Bright Futuristic JavaScript Interactivity
 
 // Mobile Menu Toggle
+const navbar = document.querySelector('.navbar');
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
-const navClose = document.querySelector('.nav-close');
+
+let navClose = document.querySelector('.nav-close');
+if (navMenu && !navClose) {
+    navClose = document.createElement('button');
+    navClose.type = 'button';
+    navClose.className = 'nav-close';
+    navClose.setAttribute('aria-label', 'Close menu');
+    navClose.innerHTML = '&times;';
+    navMenu.parentElement.insertBefore(navClose, navMenu.nextSibling);
+}
+
+const navBrand = document.querySelector('.nav-brand');
+if (navBrand && !navBrand.querySelector('.brand-tagline')) {
+    const tagline = document.createElement('span');
+    tagline.className = 'brand-tagline';
+    tagline.textContent = 'Creative Technology Studio';
+    navBrand.appendChild(tagline);
+}
+
+const toggleNavState = (isOpen) => {
+    if (!navMenu || !hamburger) return;
+    navMenu.classList.toggle('active', isOpen);
+    hamburger.classList.toggle('active', isOpen);
+    document.body.classList.toggle('nav-open', isOpen);
+    if (navClose) {
+        navClose.classList.toggle('visible', isOpen);
+    }
+    if (navBrand) {
+        navBrand.classList.toggle('nav-brand-active', isOpen);
+    }
+};
 
 if (hamburger && navMenu) {
     const toggleNav = () => {
-        navMenu.classList.toggle('active');
-        hamburger.classList.toggle('active');
-        document.body.classList.toggle('nav-open', navMenu.classList.contains('active'));
+        const isOpen = !navMenu.classList.contains('active');
+        toggleNavState(isOpen);
     };
 
     hamburger.addEventListener('click', toggleNav);
     if (navClose) {
-        navClose.addEventListener('click', toggleNav);
+        navClose.addEventListener('click', () => toggleNavState(false));
     }
 
     // Close mobile menu when clicking on a link
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', () => {
-            navMenu.classList.remove('active');
-            hamburger.classList.remove('active');
-            document.body.classList.remove('nav-open');
-            if (navClose) {
-                navClose.blur();
-            }
+            toggleNavState(false);
         });
     });
 }
@@ -46,7 +71,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // Navbar background on scroll - Bright effect
-const navbar = document.querySelector('.navbar');
 if (navbar) {
     window.addEventListener('scroll', () => {
         const currentScroll = window.pageYOffset;
