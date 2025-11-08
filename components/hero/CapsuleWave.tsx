@@ -6,7 +6,7 @@ import { usePrefersReducedMotion } from "@/components/hooks/usePrefersReducedMot
 
 type CapsuleWaveProps = {
   className?: string;
-  height?: number;
+  height?: number | string;
   waves?: number;
   amplitude?: number;
   speed?: number; // cycles per 10s
@@ -68,7 +68,7 @@ const pointsToPath = (points: Point[]) => {
 
 const CapsuleWave: React.FC<CapsuleWaveProps> = ({
   className,
-  height = DEFAULT_HEIGHT,
+  height = "clamp(60px, 9vw, 96px)",
   waves = DEFAULT_WAVES,
   amplitude = DEFAULT_AMPLITUDE,
   speed = DEFAULT_SPEED,
@@ -100,12 +100,15 @@ const CapsuleWave: React.FC<CapsuleWaveProps> = ({
     }
   };
 
+  const numericFallback =
+    typeof height === "number" ? height : DEFAULT_HEIGHT;
+
   const updatePaths = useCallback(
     (phaseIncrement = 0) => {
       ensurePhases();
-      const { width } = sizeRef.current;
+      const { width, height: observedHeight } = sizeRef.current;
       const viewWidth = width || 600;
-      const viewHeight = height;
+      const viewHeight = observedHeight || numericFallback;
       const centerY = viewHeight / 2;
       const amplitudeClamped = Math.min(amplitude, viewHeight / 2 - 4);
       const sampleCount = 8;
@@ -128,28 +131,30 @@ const CapsuleWave: React.FC<CapsuleWaveProps> = ({
         if (glowPath) glowPath.setAttribute("d", path);
       });
     },
-    [height, amplitude, waveCount, sizeRef]
+    [numericFallback, amplitude, waveCount]
   );
 
   useEffect(() => {
     const element = containerRef.current;
     if (!element) return;
-    const updateSize = (width: number) => {
-      sizeRef.current = { width, height };
+    const updateSize = () => {
+      const rect = element.getBoundingClientRect();
+      sizeRef.current = { width: rect.width, height: rect.height };
       updatePaths(0);
     };
 
-    updateSize(element.clientWidth || 600);
+    updateSize();
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
-        const { width } = entry.contentRect;
-        updateSize(width);
+        const { width, height } = entry.contentRect;
+        sizeRef.current = { width, height };
+        updatePaths(0);
       }
     });
 
     observer.observe(element);
     return () => observer.disconnect();
-  }, [containerRef, sizeRef, height, updatePaths]);
+  }, [updatePaths]);
 
   useEffect(() => {
     if (prefersReducedMotion) {
@@ -174,7 +179,7 @@ const CapsuleWave: React.FC<CapsuleWaveProps> = ({
         cancelAnimationFrame(animationFrame.current);
       }
     };
-  }, [prefersReducedMotion, speed, height, amplitude, waveCount, updatePaths]);
+  }, [prefersReducedMotion, speed, amplitude, waveCount, updatePaths]);
 
   return (
     <div
@@ -183,14 +188,20 @@ const CapsuleWave: React.FC<CapsuleWaveProps> = ({
         "relative rounded-full p-[2px] before:absolute before:inset-0 before:-z-20 before:rounded-full before:bg-gradient-to-r before:from-emerald-300 before:via-sky-200 before:to-fuchsia-300",
         className
       )}
-      style={{ height }}
+      style={{
+        height:
+          typeof height === "number" ? `${height}px` : height ?? DEFAULT_HEIGHT,
+      }}
       aria-hidden="true"
     >
       <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-emerald-200/70 via-sky-200/70 to-fuchsia-200/70 opacity-80" />
       <div className="relative h-full w-full overflow-hidden rounded-full bg-white/70 shadow-inner backdrop-blur">
         <svg
           className="absolute inset-0 h-full w-full"
-          viewBox={`0 0 ${Math.max(sizeRef.current.width || 600, 1)} ${height}`}
+          viewBox={`0 0 ${Math.max(sizeRef.current.width || 600, 1)} ${Math.max(
+            sizeRef.current.height || numericFallback,
+            1
+          )}`}
           preserveAspectRatio="none"
         >
           <defs>

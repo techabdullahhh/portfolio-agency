@@ -27,20 +27,28 @@ const HeroLarge: React.FC = () => {
         </p>
 
         <div className="mt-6">
-          <CapabilitiesPill
-            items={[
-              "Custom Website Development",
-              "Realtime Dashboards",
-              "Autonomous Agents",
-              "Edge Computing",
-              "Security Engineering",
-            ]}
-            speed={72}
-          />
+          <div className="mx-auto w-full max-w-[22rem] sm:max-w-[28rem] md:max-w-[36rem] lg:max-w-[44rem]">
+            <CapabilitiesPill
+              items={[
+                "Custom Website Development",
+                "Realtime Dashboards",
+                "Autonomous Agents",
+                "Edge Computing",
+                "Security Engineering",
+              ]}
+            />
+          </div>
         </div>
 
         <div className="mt-4">
-          <CapsuleWave className="w-full" height={84} waves={2} amplitude={12} />
+          <div className="mx-auto w-full max-w-[22rem] sm:max-w-[28rem] md:max-w-[36rem] lg:max-w-[44rem]">
+            <CapsuleWave
+              className="w-full"
+              height="clamp(60px, 9vw, 96px)"
+              waves={2}
+              amplitude={12}
+            />
+          </div>
         </div>
 
         <div className="mt-6 space-y-3">
