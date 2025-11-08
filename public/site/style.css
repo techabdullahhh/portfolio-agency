@@ -412,14 +412,14 @@ body.nav-open::before {
 .hero-spectrum {
     position: relative;
     display: inline-flex;
-    gap: 14px;
+    gap: 10px;
     justify-content: center;
     margin: 0 auto var(--spacing-lg);
-    padding: 12px 26px;
-    border-radius: 999px;
+    padding: 9px 20px;
+    border-radius: 50px;
     background: rgba(255, 255, 255, 0.92);
     border: 1px solid transparent;
-    box-shadow: 0 32px 70px rgba(37, 99, 235, 0.2);
+    box-shadow: 0 24px 48px rgba(37, 99, 235, 0.16);
     overflow: hidden;
 }
 
@@ -428,7 +428,7 @@ body.nav-open::before {
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    padding: 3px;
+    padding: 2px;
     background: linear-gradient(120deg, rgba(236, 72, 153, 0.9), rgba(109, 40, 217, 0.9), rgba(34, 197, 94, 0.9), rgba(37, 99, 235, 0.9));
     background-size: 280% 280%;
     animation: spectrumBorder 20s linear infinite;
@@ -449,9 +449,9 @@ body.nav-open::before {
 
 .hero-spectrum .spectrum-bar {
     position: relative;
-    width: 12px;
-    height: 64px;
-    border-radius: 18px;
+    width: 10px;
+    height: 52px;
+    border-radius: 14px;
     background: linear-gradient(180deg, rgba(255,255,255,0.5), rgba(37, 99, 235, 1));
     animation: spectrumPulse 2.4s cubic-bezier(0.55, 0.15, 0.35, 0.85) infinite;
     box-shadow: 0 0 30px rgba(37, 99, 235, 0.45);
@@ -939,6 +939,108 @@ body.nav-open::before {
     font-size: 0.95rem;
     position: relative;
     z-index: 1;
+}
+
+.tech-progress-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--spacing-md);
+    margin: var(--spacing-lg) 0;
+}
+
+.tech-progress-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: var(--spacing-md);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    box-shadow: 0 24px 48px rgba(37, 99, 235, 0.12);
+    overflow: hidden;
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.tech-progress-card::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: conic-gradient(from 180deg, rgba(59, 130, 246, 0.35), rgba(14, 165, 233, 0.35), rgba(236, 72, 153, 0.35), rgba(59, 130, 246, 0.35));
+    opacity: 0.6;
+    filter: blur(24px);
+    z-index: -1;
+}
+
+.tech-progress-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 28px 64px rgba(59, 130, 246, 0.18);
+}
+
+.tech-progress-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.tech-progress-header h4 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.tech-progress-header span {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: linear-gradient(120deg, rgba(59, 130, 246, 0.15), rgba(14, 165, 233, 0.15));
+    color: var(--accent-blue);
+}
+
+.tech-progress-bar {
+    position: relative;
+    width: 100%;
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(226, 232, 240, 0.6);
+    overflow: hidden;
+    --progress: 0%;
+}
+
+.tech-progress-bar span {
+    position: absolute;
+    inset: 0;
+    width: var(--progress);
+    background: linear-gradient(90deg, rgba(59, 130, 246, 0.9), rgba(14, 165, 233, 0.9));
+    border-radius: inherit;
+    transition: width 0.6s ease;
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+.tech-progress-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.tech-progress-tags li {
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(59, 130, 246, 0.08);
+    color: rgba(15, 23, 42, 0.75);
+    font-size: 0.75rem;
+    font-weight: 500;
 }
 
 .tech-stack-categories {
