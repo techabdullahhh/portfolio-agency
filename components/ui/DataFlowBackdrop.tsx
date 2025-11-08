@@ -47,7 +47,7 @@ const seededRandom = (seed: number) => {
 const clamp = (value: number, min: number, max: number) =>
   Math.min(max, Math.max(min, value));
 
-const useElementSize = (ref: React.RefObject<HTMLElement>) => {
+const useElementSize = (ref: React.RefObject<HTMLElement | null>) => {
   const [size, setSize] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
