@@ -134,16 +134,16 @@ const CapsuleWave: React.FC<CapsuleWaveProps> = ({
   useEffect(() => {
     const element = containerRef.current;
     if (!element) return;
-    const updateSize = (width: number, nextHeight: number) => {
-      sizeRef.current = { width, height: nextHeight };
+    const updateSize = (width: number) => {
+      sizeRef.current = { width, height };
       updatePaths(0);
     };
 
-    updateSize(element.clientWidth, height);
+    updateSize(element.clientWidth || 600);
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
-        const { width, height: entryHeight } = entry.contentRect;
-        updateSize(width, entryHeight);
+        const { width } = entry.contentRect;
+        updateSize(width);
       }
     });
 
@@ -180,12 +180,13 @@ const CapsuleWave: React.FC<CapsuleWaveProps> = ({
     <div
       ref={containerRef}
       className={cn(
-        "relative rounded-full ring-2 ring-transparent p-[2px] before:absolute before:inset-0 before:-z-10 before:rounded-full before:bg-gradient-to-r before:from-sky-100 before:via-blue-200 before:to-purple-200 before:opacity-80",
+        "relative rounded-full p-[2px] before:absolute before:inset-0 before:-z-20 before:rounded-full before:bg-gradient-to-r before:from-emerald-300 before:via-sky-200 before:to-fuchsia-300",
         className
       )}
       style={{ height }}
       aria-hidden="true"
     >
+      <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-emerald-200/70 via-sky-200/70 to-fuchsia-200/70 opacity-80" />
       <div className="relative h-full w-full overflow-hidden rounded-full bg-white/70 shadow-inner backdrop-blur">
         <svg
           className="absolute inset-0 h-full w-full"

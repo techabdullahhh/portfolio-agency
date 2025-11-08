@@ -148,7 +148,7 @@ const CapabilitiesPill: React.FC<CapabilitiesPillProps> = ({
           key={`${iterationKey}-${item}-${index}`}
           role="listitem"
           className={cn(
-            "snap-start shrink-0 whitespace-nowrap text-sm font-medium uppercase tracking-[0.25em] text-slate-800/90 md:text-base",
+            "snap-start shrink-0 whitespace-nowrap text-sm font-medium uppercase tracking-[0.25em] text-slate-900 md:text-base",
             itemClassName
           )}
         >
@@ -161,16 +161,16 @@ const CapabilitiesPill: React.FC<CapabilitiesPillProps> = ({
   return (
     <div
       className={cn(
-        "relative rounded-full ring-2 ring-transparent p-[2px] before:absolute before:inset-0 before:-z-10 before:rounded-full before:bg-gradient-to-r before:from-sky-200 before:via-blue-400 before:to-purple-400 before:opacity-90",
+        "relative rounded-full p-[2px] before:absolute before:inset-0 before:-z-10 before:rounded-full before:bg-gradient-to-r before:from-emerald-400 before:to-fuchsia-500",
         pillClassName
       )}
       aria-label="Capabilities carousel"
     >
-      <div className="relative rounded-full bg-white/70 px-4 py-3 backdrop-blur-md">
+      <div className="relative rounded-full bg-white/70 px-4 py-3 backdrop-blur">
         <div className="pointer-events-none absolute left-4 right-4 top-1 hidden overflow-hidden md:block">
           <div
             ref={progressRef}
-            className="h-1 rounded-full bg-gradient-to-r from-sky-200 via-blue-400 to-purple-400 opacity-60"
+            className="h-1 rounded-full bg-gradient-to-r from-emerald-300 via-cyan-300 to-fuchsia-400 opacity-60"
             aria-hidden="true"
           />
         </div>
