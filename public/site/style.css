@@ -1872,20 +1872,52 @@ body.nav-open::before {
 
 @media (max-width: 640px) {
     .hero-content {
-        gap: 1.6rem;
+        align-items: center;
+        text-align: center;
+        gap: 1.5rem;
+        width: 100%;
     }
 
     .hero-description {
-        margin-bottom: 1.4rem;
+        max-width: 24rem;
+        margin: 0 auto 1.3rem;
+        text-align: center;
+        line-height: 1.75;
     }
 
     .hero-spectrum {
-        margin-top: 0.4rem;
-        margin-bottom: 1.35rem;
+        width: min(320px, 88vw);
+        margin: 0 auto 1.4rem;
+        transform: scale(1);
+        gap: 8px;
+        padding: 8px 14px;
+    }
+
+    .hero-spectrum .spectrum-bar {
+        width: 8px;
+        height: 40px;
     }
 
     .hero-buttons {
-        margin-top: 1rem;
+        width: 100%;
+        gap: 0.8rem;
+        margin: 0.9rem 0 calc(var(--spacing-lg) - 0.25rem);
+        align-items: center;
+    }
+
+    .hero-buttons .btn {
+        width: min(320px, 88vw);
+    }
+
+    .hero-stats {
+        width: 100%;
+        align-items: center;
+        text-align: center;
+    }
+
+    .stat-item {
+        width: 100%;
+        text-align: center;
     }
 }
 
