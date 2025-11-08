@@ -1876,23 +1876,23 @@ body.nav-open::before {
     }
 
     .hero {
-        padding: calc(var(--spacing-lg) + 24px) var(--spacing-sm) var(--spacing-lg);
-        margin-top: 1.6rem;
+        padding: calc(var(--spacing-lg) + 22px) var(--spacing-sm) var(--spacing-lg);
+        margin-top: 1.5rem;
     }
 
     .hero-container {
-        padding-bottom: 3rem;
+        padding-bottom: 2.6rem;
     }
 
     .hero-content {
         text-align: left;
         display: flex;
         flex-direction: column;
-        gap: 1.6rem;
+        gap: 1.3rem;
     }
 
     .hero-title {
-        font-size: 2.35rem;
+        font-size: 2.3rem;
         line-height: 1.08;
     }
 
@@ -1903,22 +1903,23 @@ body.nav-open::before {
 
     .hero-spectrum {
         width: 100%;
-        max-width: 340px;
-        transform: scale(0.92);
-        gap: 10px;
-        padding: 10px 16px;
+        max-width: 320px;
+        transform: scale(0.9);
+        gap: 8px;
+        padding: 8px 16px;
         align-self: flex-start;
+        margin: 0 0 1.25rem;
     }
 
     .hero-spectrum .spectrum-bar {
-        height: 46px;
+        height: 42px;
     }
 
     .hero-buttons {
         flex-direction: column;
         align-items: stretch;
-        gap: 0.75rem;
-        margin-bottom: var(--spacing-lg);
+        gap: 0.65rem;
+        margin: 0.75rem 0 var(--spacing-lg);
     }
 
     .hero-buttons .btn {
@@ -1940,20 +1941,20 @@ body.nav-open::before {
     .hero-stats {
         flex-direction: column;
         align-items: flex-start;
-        gap: 1.5rem;
+        gap: 1.4rem;
         margin-top: var(--spacing-md);
     }
 
     .stat-number {
-        font-size: 2.45rem;
+        font-size: 2.4rem;
     }
 
     .hero-badge {
-        width: 100%;
-        justify-content: center;
-        font-size: 0.75rem;
-        letter-spacing: 1.6px;
-        padding: 0.55rem 1rem;
+        width: auto;
+        align-self: flex-start;
+        font-size: 0.74rem;
+        letter-spacing: 1.4px;
+        padding: 0.5rem 0.95rem;
     }
 
     .scroll-indicator {
