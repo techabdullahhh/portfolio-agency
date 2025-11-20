@@ -1,16 +1,21 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { prisma } from "@/lib/prisma";
 
-// Security: Only allow seeding in production if SECRET_KEY matches
-const SECRET_KEY = process.env.SEED_SECRET_KEY || "CHANGE_THIS_SECRET";
+// Security: Allow seeding if no admin exists OR if SECRET_KEY matches
+const SECRET_KEY = process.env.SEED_SECRET_KEY || "seed-admin-2024";
 
 export async function POST(request: Request) {
   try {
     const { secret, email, password } = await request.json();
 
-    // Verify secret key
-    if (secret !== SECRET_KEY) {
+    // Allow seeding if:
+    // 1. Secret key matches, OR
+    // 2. No admin users exist (first-time setup)
+    const existingAdmin = await prisma.adminUser.findFirst();
+    const isFirstTime = !existingAdmin;
+    
+    if (secret !== SECRET_KEY && !isFirstTime) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -20,23 +25,6 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
-
-    // Use DIRECT_DATABASE_URL for seeding
-    const databaseUrl = process.env.DIRECT_DATABASE_URL || process.env.DATABASE_URL;
-    if (!databaseUrl) {
-      return NextResponse.json(
-        { error: "Database connection not configured" },
-        { status: 500 }
-      );
-    }
-
-    const prisma = new PrismaClient({
-      datasources: {
-        db: {
-          url: databaseUrl,
-        },
-      },
-    });
 
     const passwordHash = await bcrypt.hash(password, 12);
 
@@ -50,8 +38,6 @@ export async function POST(request: Request) {
         role: "admin",
       },
     });
-
-    await prisma.$disconnect();
 
     return NextResponse.json({
       success: true,
