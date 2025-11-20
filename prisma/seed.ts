@@ -1,7 +1,20 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
-const prisma = new PrismaClient();
+// Use DIRECT_DATABASE_URL for seeding to avoid connection pool issues
+const databaseUrl = process.env.DIRECT_DATABASE_URL || process.env.DATABASE_URL;
+if (!databaseUrl) {
+  console.error("DATABASE_URL or DIRECT_DATABASE_URL environment variable is required");
+  process.exit(1);
+}
+
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: databaseUrl,
+    },
+  },
+});
 
 async function main() {
   const email = process.env.ADMIN_SEED_EMAIL;
