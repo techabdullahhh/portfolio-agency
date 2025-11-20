@@ -152,3 +152,6 @@ CREATE UNIQUE INDEX "Project_slug_key" ON "Project"("slug");
 -- CreateIndex
 CREATE UNIQUE INDEX "BlogPost_slug_key" ON "BlogPost"("slug");
 
+
+
+

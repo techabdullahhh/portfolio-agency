@@ -35,87 +35,100 @@ function computeMonthlySeries<T extends { createdAt: Date }>(items: T[], months:
 }
 
 export default async function DashboardPage() {
-  const [projectsCount, servicesCount, postsCount, messagesCount, teamCount] = await Promise.all([
-    prisma.project.count(),
-    prisma.service.count(),
-    prisma.blogPost.count({ where: { status: "PUBLISHED" } }),
-    prisma.contactMessage.count(),
-    prisma.teamMember.count(),
-  ]);
+  let projectsCount = 0;
+  let servicesCount = 0;
+  let postsCount = 0;
+  let messagesCount = 0;
+  let teamCount = 0;
+  let projects: Array<{ id: string; title: string; status: string; category: string; createdAt: Date }> = [];
+  let posts: Array<{ id: string; title: string; status: string; publishedAt: Date | null; createdAt: Date }> = [];
+  let messages: Array<{ id: string; name: string; email: string; createdAt: Date; isRead: boolean }> = [];
+  let chartData: Array<{ month: string; projects: number; posts: number; leads: number }> = [];
+  let recentActivity: Array<{ id: string; title: string; description: string; timestamp: string }> = [];
+  let stats: Array<{ title: string; value: number; icon: LucideIcon; description: string }> = [];
 
-  const [projects, posts, messages] = await Promise.all([
-    prisma.project.findMany({
-      select: { id: true, title: true, status: true, category: true, createdAt: true },
-      orderBy: { createdAt: "desc" },
-      take: 5,
-    }),
-    prisma.blogPost.findMany({
-      select: { id: true, title: true, status: true, publishedAt: true, createdAt: true },
-      orderBy: { createdAt: "desc" },
-      take: 5,
-    }),
-    prisma.contactMessage.findMany({
-      select: { id: true, name: true, email: true, createdAt: true, isRead: true },
-      orderBy: { createdAt: "desc" },
-      take: 5,
-    }),
-  ]);
+  try {
+    [projectsCount, servicesCount, postsCount, messagesCount, teamCount] = await Promise.all([
+      prisma.project.count(),
+      prisma.service.count(),
+      prisma.blogPost.count({ where: { status: "PUBLISHED" } }),
+      prisma.contactMessage.count(),
+      prisma.teamMember.count(),
+    ]);
 
-  const months = Array.from({ length: 6 }).map((_, index) => {
-    const base = new Date();
-    base.setMonth(base.getMonth() - (5 - index));
-    return base;
-  });
+    [projects, posts, messages] = await Promise.all([
+      prisma.project.findMany({
+        select: { id: true, title: true, status: true, category: true, createdAt: true },
+        orderBy: { createdAt: "desc" },
+        take: 5,
+      }),
+      prisma.blogPost.findMany({
+        select: { id: true, title: true, status: true, publishedAt: true, createdAt: true },
+        orderBy: { createdAt: "desc" },
+        take: 5,
+      }),
+      prisma.contactMessage.findMany({
+        select: { id: true, name: true, email: true, createdAt: true, isRead: true },
+        orderBy: { createdAt: "desc" },
+        take: 5,
+      }),
+    ]);
 
-  const [projectSeries, postSeries, leadSeries] = await Promise.all([
-    prisma.project
-      .findMany({ where: { createdAt: { gte: months[0] } }, select: { createdAt: true } })
-      .then((items) => computeMonthlySeries(items, months)),
-    prisma.blogPost
-      .findMany({ where: { createdAt: { gte: months[0] } }, select: { createdAt: true } })
-      .then((items) => computeMonthlySeries(items, months)),
-    prisma.contactMessage
-      .findMany({ where: { createdAt: { gte: months[0] } }, select: { createdAt: true } })
-      .then((items) => computeMonthlySeries(items, months)),
-  ]);
+    const months = Array.from({ length: 6 }).map((_, index) => {
+      const base = new Date();
+      base.setMonth(base.getMonth() - (5 - index));
+      return base;
+    });
 
-  const chartData = months.map((month, index) => ({
-    month: formatMonth(month),
-    projects: projectSeries[index]?.value ?? 0,
-    posts: postSeries[index]?.value ?? 0,
-    leads: leadSeries[index]?.value ?? 0,
-  }));
+    const [projectSeries, postSeries, leadSeries] = await Promise.all([
+      prisma.project
+        .findMany({ where: { createdAt: { gte: months[0] } }, select: { createdAt: true } })
+        .then((items) => computeMonthlySeries(items, months)),
+      prisma.blogPost
+        .findMany({ where: { createdAt: { gte: months[0] } }, select: { createdAt: true } })
+        .then((items) => computeMonthlySeries(items, months)),
+      prisma.contactMessage
+        .findMany({ where: { createdAt: { gte: months[0] } }, select: { createdAt: true } })
+        .then((items) => computeMonthlySeries(items, months)),
+    ]);
 
-  const recentActivity = [
-    ...projects.map((project) => ({
-      id: `project-${project.id}`,
-      title: `Project • ${project.title}`,
-      description: `Status ${project.status.toLowerCase().replace("_", " ")}`,
-      date: project.createdAt,
-    })),
-    ...posts.map((post) => ({
-      id: `post-${post.id}`,
-      title: `Post • ${post.title}`,
-      description: post.status === "PUBLISHED" ? "Published" : "Draft saved",
-      date: post.publishedAt ?? post.createdAt,
-    })),
-    ...messages.map((message) => ({
-      id: `message-${message.id}`,
-      title: `Message from ${message.name}`,
-      description: message.email,
-      date: message.createdAt,
-    })),
-  ]
-    .sort((a, b) => b.date.getTime() - a.date.getTime())
-    .slice(0, 6)
-    .map((item) => ({
-      id: item.id,
-      title: item.title,
-      description: item.description,
-      timestamp: format(item.date, "MMM d, p"),
+    chartData = months.map((month, index) => ({
+      month: formatMonth(month),
+      projects: projectSeries[index]?.value ?? 0,
+      posts: postSeries[index]?.value ?? 0,
+      leads: leadSeries[index]?.value ?? 0,
     }));
 
-  const stats = [
+    recentActivity = [
+      ...projects.map((project) => ({
+        id: `project-${project.id}`,
+        title: `Project • ${project.title}`,
+        description: `Status ${project.status.toLowerCase().replace("_", " ")}`,
+        date: project.createdAt,
+      })),
+      ...posts.map((post) => ({
+        id: `post-${post.id}`,
+        title: `Post • ${post.title}`,
+        description: post.status === "PUBLISHED" ? "Published" : "Draft saved",
+        date: post.publishedAt ?? post.createdAt,
+      })),
+      ...messages.map((message) => ({
+        id: `message-${message.id}`,
+        title: `Message from ${message.name}`,
+        description: message.email,
+        date: message.createdAt,
+      })),
+    ]
+      .sort((a, b) => b.date.getTime() - a.date.getTime())
+      .slice(0, 6)
+      .map((item) => ({
+        id: item.id,
+        title: item.title,
+        description: item.description,
+        timestamp: format(item.date, "MMM d, p"),
+      }));
+
+    stats = [
     {
       title: "Projects",
       value: projectsCount,
@@ -140,7 +153,24 @@ export default async function DashboardPage() {
       icon: Inbox,
       description: "Inbound leads awaiting response",
     },
-  ];
+    ];
+  } catch (error) {
+    console.error("Dashboard error:", error);
+    // Return error UI instead of crashing
+    return (
+      <div className="space-y-8 pb-6">
+        <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-red-800">
+          <h2 className="text-lg font-semibold">Unable to load dashboard</h2>
+          <p className="mt-2 text-sm">
+            There was an error connecting to the database. Please check your connection settings.
+          </p>
+          <p className="mt-2 text-xs text-red-600">
+            {error instanceof Error ? error.message : "Unknown error"}
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8 pb-6">
