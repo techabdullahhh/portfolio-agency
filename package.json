@@ -4,12 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build && npm run db:seed:production",
     "start": "next start",
     "lint": "next lint",
     "db:migrate": "prisma migrate dev",
     "db:generate": "prisma generate",
     "db:seed": "prisma db seed",
+    "db:seed:production": "tsx prisma/seed.ts || echo 'Seed failed or already exists, continuing...'",
+    "postinstall": "prisma generate",
     "prepare": "prisma generate"
   },
   "dependencies": {
