@@ -1,0 +1,6 @@
+# This file locks the Migration SQL provider.
+provider = "postgresql"
+
+
+
+

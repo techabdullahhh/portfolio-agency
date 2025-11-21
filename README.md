@@ -1,161 +1,155 @@
-# Portfolio Website
+# Portfolio Agency Website
 
-A beautiful, modern, and fully responsive portfolio website built with HTML, CSS, and JavaScript.
+A beautiful, modern, and fully responsive portfolio agency website with a powerful admin panel for content management.
 
 ## Features
 
+### Public Website
 - 🎨 Modern and clean design
 - 📱 Fully responsive (mobile, tablet, desktop)
 - ⚡ Smooth scrolling and animations
 - 🎯 Interactive navigation with active section highlighting
 - 💼 Projects showcase section
-- 🛠️ Skills and technologies section
+- 🛠️ Services and technologies section
+- 👥 Team members section
+- 💬 Testimonials section
 - 📧 Contact form
 - 🌐 Social media links
 
-## Sections
+### Admin Panel
+- 📊 Dashboard with metrics, activity feed, and analytics
+- 📝 Full CRUD for Projects, Services, Testimonials, Blog Posts, Team Members
+- 📧 Contact Messages inbox with read/unread tracking
+- ⚙️ Site Settings (branding, social links, theme toggle, logo/favicon uploads)
+- 📁 Media Library for upload/rename/delete
+- 🔐 Authentication via NextAuth credentials
 
-1. **Hero Section** - Eye-catching introduction with call-to-action buttons
-2. **About** - Personal information and statistics
-3. **Projects** - Portfolio of featured projects
-4. **Skills** - Technical skills with animated progress bars
-5. **Contact** - Contact information and form
+## Tech Stack
+
+### Public Site
+- HTML, CSS, JavaScript
+- Three.js for 3D animations
+
+### Admin Panel
+- Next.js 15 App Router + React 19
+- TypeScript, Tailwind CSS, shadcn-inspired UI primitives
+- NextAuth (credentials provider) with bcrypt-hashed admin user
+- Prisma ORM with SQLite (override with PostgreSQL via `DATABASE_URL`)
+- React Hook Form + Zod, TanStack Query, Recharts, React Hot Toast
+
+## Project Structure
+
+```
+portfolio-agency/
+├── index.html              # Main homepage
+├── about.html              # About page
+├── services.html           # Services page
+├── projects.html           # Projects listing
+├── blog.html               # Blog listing
+├── testimonials.html       # Testimonials page
+├── contact.html            # Contact page
+├── style.css               # Main stylesheet
+├── script.js               # Main JavaScript
+├── admin-panel/            # Next.js admin panel
+│   ├── app/                # App Router routes (public, admin, and API handlers)
+│   ├── components/         # UI kit, dashboard widgets, form wrappers
+│   ├── lib/                # Prisma client, auth helpers, upload utilities, validators
+│   └── prisma/             # Database schema and seed script
+└── README.md               # This file
+```
 
 ## Getting Started
 
-### Prerequisites
+### Public Website
 
-No dependencies required! Just a modern web browser.
+1. Open `index.html` in your web browser
+2. That's it! No build process needed.
 
-### Installation
+### Admin Panel
 
-1. Clone or download this repository
-2. Open `index.html` in your web browser
-3. That's it! No build process needed.
+#### 1. Install dependencies
 
-### Customization
-
-To personalize the portfolio:
-
-1. **Update Personal Information**:
-   - Edit the name in `index.html` (search for "Your Name")
-   - Update the subtitle and description in the hero section
-   - Modify the about section text
-
-2. **Add Your Projects**:
-   - Update project cards in the projects section
-   - Add real project images (replace placeholder divs)
-   - Update project links (Live Demo and GitHub)
-
-3. **Update Skills**:
-   - Modify skill items and progress percentages
-   - Add or remove skills as needed
-
-4. **Contact Information**:
-   - Update email, phone, and location in the contact section
-   - Configure form submission (currently shows an alert)
-   - Add your social media links
-
-5. **Add Your Photo**:
-   - Replace the placeholder SVG in the about section
-   - Add an `<img>` tag with your photo
-
-6. **Styling**:
-   - Colors can be customized in `style.css` using CSS variables
-   - Fonts are loaded from Google Fonts (Inter)
-
-## File Structure
-
-```
-portfolio/
-├── index.html      # Main HTML file
-├── style.css       # Stylesheet with all styling
-├── script.js       # JavaScript for interactivity
-└── README.md       # This file
+```bash
+cd admin-panel
+npm install
 ```
 
-## Browser Support
+#### 2. Configure environment
 
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
+Copy `.env.example` to `.env` and fill in secrets. Important variables:
 
-## Features in Detail
+- `DATABASE_URL` – defaults to local SQLite (`file:./prisma/dev.db`)
+- `NEXTAUTH_SECRET` – random string for NextAuth JWT
+- `ADMIN_SEED_EMAIL` / `ADMIN_SEED_PASSWORD` – initial admin credentials seeded into the database
+- `UPLOAD_DIR` – path for local media uploads (default `./public/uploads`)
 
-### Animations
-- Fade-in animations on scroll
-- Skill bar progress animations
-- Project card hover effects
-- Smooth page transitions
+#### 3. Generate schema & seed admin
 
-### Responsive Design
-- Mobile-first approach
-- Hamburger menu for mobile devices
-- Flexible grid layouts
-- Optimized typography for all screen sizes
-
-### Interactive Elements
-- Active navigation highlighting
-- Smooth scroll navigation
-- Animated counters for statistics
-- Form validation and submission
-
-## Customization Guide
-
-### Changing Colors
-
-Edit the CSS variables in `style.css`:
-
-```css
-:root {
-    --primary-color: #6366f1;
-    --secondary-color: #8b5cf6;
-    /* ... other colors */
-}
+```bash
+npm run db:migrate -- --name init   # create database & tables
+npm run db:seed                     # seed admin user and default settings
 ```
 
-### Adding Projects
+#### 4. Start the dev server
 
-Add a new project card:
-
-```html
-<div class="project-card">
-    <div class="project-image">
-        <img src="path-to-image.jpg" alt="Project Name">
-    </div>
-    <div class="project-content">
-        <h3 class="project-title">Project Name</h3>
-        <p class="project-description">Project description...</p>
-        <div class="project-tags">
-            <span class="tag">Technology</span>
-        </div>
-        <div class="project-links">
-            <a href="#" class="project-link">Live Demo</a>
-            <a href="#" class="project-link">GitHub</a>
-        </div>
-    </div>
-</div>
+```bash
+npm run dev
 ```
 
-### Setting Up Contact Form
+Visit [http://localhost:3000/login](http://localhost:3000/login) and log in with the seeded admin credentials.
 
-The contact form currently shows an alert. To make it functional:
+#### 5. Production build
 
-1. Set up a backend service (e.g., Formspree, Netlify Forms, or your own server)
-2. Update the form action in `index.html`
-3. Modify the form submission handler in `script.js`
+```bash
+npm run build
+npm start
+```
+
+## Public API Endpoints
+
+Unauthenticated JSON APIs consume the same database so the existing static site can fetch fresh content:
+
+```
+GET /api/public/projects
+GET /api/public/services
+GET /api/public/testimonials
+GET /api/public/blog
+GET /api/public/team
+GET /api/public/settings
+POST /api/messages       # contact form submissions (name, email, message)
+```
+
+### Integrating with the static portfolio site
+
+- Replace hard-coded sections by fetching from the endpoints above (e.g. `fetch('https://your-admin-domain/api/public/projects').then(res => res.json())`).
+- Update the portfolio contact form to `POST` to `/api/messages` with JSON `{ name, email, message }`.
+- Media URLs returned from the CMS are relative (e.g. `/uploads/filename.jpg`); prefix them with the admin host when rendering on the static site.
+
+## Authentication & Security
+
+- `/login` authenticates via credentials; passwords stored with bcrypt hash.
+- Middleware guards all `/admin` and `/api` CRUD routes.
+- Update the seeded password immediately via `ADMIN_SEED_PASSWORD` and rerun `npm run db:seed` (or update via database) before deploying.
+
+## Database Notes
+
+- Default SQLite is ideal for local development; swap to PostgreSQL by updating `DATABASE_URL` and re-running migrations.
+- Prisma migrations live under `prisma/migrations`. Use `npm run db:migrate -- --name your_change` to evolve the schema.
+
+## Deployment
+
+The project deploys cleanly to Vercel, Render, or any Node host supporting Next.js App Router:
+
+1. Provide production environment variables (`DATABASE_URL`, `NEXTAUTH_SECRET`, etc.).
+2. Run migrations on deploy (`npx prisma migrate deploy`).
+3. Seed an admin user once (`npm run db:seed`).
+
+The static HTML files can be deployed to any static hosting service (Netlify, Vercel, GitHub Pages, etc.).
 
 ## License
 
 This project is open source and available for personal and commercial use.
 
-## Credits
-
-- Font: [Inter](https://fonts.google.com/specimen/Inter) by Google Fonts
-- Icons: SVG icons (no external dependencies)
-
 ---
 
-**Enjoy your beautiful portfolio!** 🚀
-
+**Enjoy your beautiful portfolio agency website!** 🚀
